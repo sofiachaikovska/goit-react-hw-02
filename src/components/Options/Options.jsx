@@ -1,22 +1,10 @@
 import css from './Options.module.css';
-import { useEffect } from 'react';
 
 const Options = ({
   totalFeedback,
-  setIsFeedbackVisible,
   handleClickFeedbackOptions,
+  handleResetFeedback,
 }) => {
-  useEffect(() => {
-    if (totalFeedback > 0) {
-      setIsFeedbackVisible(true);
-    }
-  }, [totalFeedback, setIsFeedbackVisible]);
-
-  const handleResetFeedback = () => {
-    handleClickFeedbackOptions('reset');
-    setIsFeedbackVisible(false);
-  };
-
   return (
     <div className={css.optionsButtonContainer}>
       <button

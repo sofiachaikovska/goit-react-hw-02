@@ -15,8 +15,6 @@ function App() {
     return parsedFeedback;
   });
 
-  const [isFeedbackVisible, setIsFeedbackVisible] = useState(false);
-
   const updateFeedback = feedbackType => {
     if (feedbackType === 'reset') {
       setFeedback(initialFeedback);
@@ -27,6 +25,20 @@ function App() {
 
   const totalFeedback = feedback.good + feedback.neutral + feedback.bad;
 
+  const goodFeedbackNumber = feedback.good;
+  const neutralFeedbackNumber = feedback.neutral;
+
+  const handleResetFeedback = () => {
+    setFeedback(initialFeedback);
+  };
+
+  const countPositive =
+    totalFeedback > 0
+      ? Math.round(
+          ((goodFeedbackNumber + neutralFeedbackNumber) / totalFeedback) * 100,
+        )
+      : 0;
+
   useEffect(() => {
     localStorage.setItem('feedbackValues', JSON.stringify(feedback));
   }, [feedback]);
@@ -36,14 +48,17 @@ function App() {
       <Description />
       <Options
         totalFeedback={totalFeedback}
-        setIsFeedbackVisible={setIsFeedbackVisible}
         handleClickFeedbackOptions={updateFeedback}
+        handleResetFeedback={handleResetFeedback}
       />
-      {isFeedbackVisible ? (
-        <Feedback feedback={feedback} total={totalFeedback} />
-      ) : (
-        <Notification />
+      {totalFeedback > 0 && (
+        <Feedback
+          feedback={feedback}
+          total={totalFeedback}
+          countPositive={countPositive}
+        />
       )}
+      {totalFeedback === 0 && <Notification />}
     </>
   );
 }
